@@ -24,25 +24,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: 🏗 Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
 
       - name: 🏗 Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: pnpm
 
       - name: 🗂️ Install dependencies
-        run: pnpm i
+        run: yarn install
 
       - name: 🔨 Build
-        run: pnpm build:ci
+        run: yarn build:ci
 
       - name: 🧪 Test
-        run: pnpm test:ci
+        run: yarn test:ci
 
       # Upload dist artifacts
       - uses: actions/upload-artifact@v3
