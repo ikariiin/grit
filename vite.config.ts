@@ -18,5 +18,6 @@ export default defineConfig({
       provider: "c8",
       reporter: ["html", "lcov"],
     },
+    passWithNoTests: true,
   },
 });
