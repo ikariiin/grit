@@ -78,8 +78,8 @@ jobs:
     # Manual deployment
     # See https://devblogs.microsoft.com/devops/i-need-manual-approvers-for-github-actions-and-i-got-them-now/
     environment:
-      name: pchmn.github.io/vite-react-ts-ghactions-template
-      url: https://pchmn.github.io/vite-react-ts-ghactions-template/
+      name: ikariiin.github.io/grit
+      url: https://ikariiin.github.io/grit/
     steps:
       # Download dist artifacts
       - uses: actions/download-artifact@v3
