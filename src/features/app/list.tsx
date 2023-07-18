@@ -13,7 +13,12 @@ export function List() {
   const searchFilterEntries = useMemo(() => {
     if (search.trim().length === 0) return entries;
     return entries.filter((entry) =>
-      entry.metadata.root.package.metadata["dc:title"].toLowerCase().includes(search.toLowerCase())
+      (typeof entry.metadata.root.package.metadata["dc:title"] === "string"
+        ? entry.metadata.root.package.metadata["dc:title"]
+        : entry.metadata.root.package.metadata["dc:title"]["#text"]
+      )
+        .toLowerCase()
+        .includes(search.toLowerCase())
     );
   }, [entries, search]);
 
