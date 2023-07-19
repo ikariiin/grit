@@ -1,18 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 
-import { type HeaderProps } from "@/components/reader/header";
-import { RenderProps } from "@/components/reader/render";
+import { Header } from "@/components/reader/header";
+import { Render } from "@/components/reader/render";
 import { HistoryStorage } from "@/services/history";
 import { History } from "@/services/history/history";
-import { lazyImportModule, ModuleType } from "@/services/import";
 import { LoaderData } from "@/services/loaders";
 import { type readerLoader } from "@/services/loaders/reader";
 import { ChapterListItem } from "@/services/parser/interfaces";
 import { TOCParser } from "@/services/parser/toc";
-
-const LazyLoadedHeader = lazyImportModule<HeaderProps>(ModuleType.Component, "reader/header");
-const LazyLoadedRender = lazyImportModule<RenderProps>(ModuleType.Component, "reader/render");
 
 export function Reader() {
   const readerData = useLoaderData() as LoaderData<typeof readerLoader>;
@@ -133,7 +129,7 @@ export function Reader() {
     if (!tocChapter) return null;
 
     if (loading) return <div>Loading...</div>;
-    return <LazyLoadedRender parser={readerData.parser} src={tocChapter.src} />;
+    return <Render parser={readerData.parser} src={tocChapter.src} />;
   }, [tocChapter, readerData.parser, loading]);
 
   const onChapterChange = useCallback((tocChapter: ChapterListItem) => {
@@ -143,7 +139,7 @@ export function Reader() {
 
   return (
     <div className="min-h-screen w-screen py-14">
-      <LazyLoadedHeader
+      <Header
         entry={readerData.entry}
         parser={readerData.parser}
         toc={toc}

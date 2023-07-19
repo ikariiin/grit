@@ -1,25 +1,23 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { lazyImportModule, ModuleType } from "@/services/import";
+import { App } from "@/features/app";
+import { Landing } from "@/features/landing";
+import { Reader } from "@/features/reader";
 import { readerLoader } from "@/services/loaders/reader";
-
-const LazyLoadedLanding = lazyImportModule(ModuleType.Feature, "landing");
-const LazyLoadedApp = lazyImportModule(ModuleType.Feature, "app");
-const LazyLoadedReader = lazyImportModule(ModuleType.Feature, "reader");
 
 export function Router() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <LazyLoadedLanding />,
+      element: <Landing />,
     },
     {
       path: "/app",
-      element: <LazyLoadedApp />,
+      element: <App />,
     },
     {
       path: "/app/:id",
-      element: <LazyLoadedReader />,
+      element: <Reader />,
       loader: readerLoader,
     },
   ]);

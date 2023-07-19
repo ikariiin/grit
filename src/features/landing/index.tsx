@@ -2,9 +2,7 @@ import { Button } from "react-daisyui";
 import { NavLink } from "react-router-dom";
 
 import { FullPage } from "@/components/page/full";
-import { lazyImportModule, ModuleType } from "@/services/import";
-
-const LazyLoadedShowoff = lazyImportModule(ModuleType.Feature, "landing/showoff");
+import { Showoff } from "@/features/landing/showoff";
 
 export function Landing() {
   return (
@@ -25,7 +23,7 @@ export function Landing() {
         </NavLink>
       </section>
       <section className="mt-12">
-        <LazyLoadedShowoff />
+        <Showoff />
       </section>
       <section className="text-gray-500 text-sm mx-12 mt-12">
         Yes, even sharing to another device is done with peer to peer connections and never goes through our servers!
