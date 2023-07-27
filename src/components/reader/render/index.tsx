@@ -103,6 +103,7 @@ export function Render({ parser, src }: RenderProps) {
         setContent(content);
       } catch (e) {
         //TODO: Error handling
+        console.error(e);
       }
     } finally {
       setLoading(false);
@@ -119,7 +120,7 @@ export function Render({ parser, src }: RenderProps) {
 
   return (
     <main
-      className="font-serif md:w-[500px] w-full my-8 mx-auto"
+      className="font-serif md:w-[500px] w-full px-4 md:px-0 my-8 mx-auto"
       style={{ fontSize: `${preference.fontSize}rem`, lineHeight: `${preference.lineHeight}` }}
     >
       {styles.map((style, idx) => (

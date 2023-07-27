@@ -32,8 +32,8 @@ export function List() {
 
   return (
     <main className="p-4" role="list">
-      <div className="flex gap-4 items-center mb-4">
-        <div className="bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-indigo-500 text-clip font-extrabold text-xl">
+      <div className="flex gap-x-0 md:gap-x-4 gap-y-4 items-center mb-4 flex-wrap">
+        <div className="bg-clip-text w-full md:w-auto text-transparent bg-gradient-to-r from-teal-500 to-indigo-500 text-clip font-extrabold text-xl">
           Your library
         </div>
         <Input
@@ -43,7 +43,7 @@ export function List() {
           onChange={(ev) => setSearch(ev.target.value)}
         />
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-0 md:gap-x-4 gap-y-2 md:gap-y-4">
         <AddAction onFinish={fetchEntires} />
         <div className="col-span-2"></div>
         {searchFilterEntries.map((entry) => (

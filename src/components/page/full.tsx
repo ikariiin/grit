@@ -6,7 +6,7 @@ export interface FullPageProps {
 
 export function FullPage({ children, ...props }: FullPageProps & HTMLProps<HTMLElement>) {
   return (
-    <section {...props} className={`${props.className ?? ""} w-screen h-screen`}>
+    <section {...props} className={`${props.className ?? ""} w-screen min-h-screen`}>
       {children}
     </section>
   );

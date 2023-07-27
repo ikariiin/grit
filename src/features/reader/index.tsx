@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { ElementRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 
 import { Header } from "@/components/reader/header";
@@ -17,33 +17,46 @@ export function Reader() {
   const [flatToc, setFlatToc] = useState<ChapterListItem[]>([]);
   const [toc, setToc] = useState<ChapterListItem[]>([]);
   const [tocChapter, setTocChapter] = useState<ChapterListItem | null>(null);
+  const mainContainerRef = useRef<ElementRef<"div"> | null>(null);
+
+  const navigatePreviousChapter = useCallback(() => {
+    if (!tocChapter) return;
+
+    const chIdx = flatToc.findIndex((toc) => toc.id === tocChapter.id);
+
+    if (chIdx !== 0) {
+      const previousTocChapter = flatToc[chIdx - 1];
+      setCurrentChapterId(previousTocChapter.id);
+      setTocChapter(previousTocChapter);
+    }
+  }, [flatToc, tocChapter]);
+
+  const navigateNextChapter = useCallback(() => {
+    if (!tocChapter) return;
+
+    const chIdx = flatToc.findIndex((toc) => toc.id === tocChapter.id);
+
+    if (chIdx !== flatToc.length - 1) {
+      const nextTocChapter = flatToc[chIdx + 1];
+      setCurrentChapterId(nextTocChapter.id);
+      setTocChapter(nextTocChapter);
+    }
+  }, [flatToc, tocChapter]);
 
   const navigationHandlers = useCallback(
     (ev: KeyboardEvent) => {
-      if (!tocChapter) return;
-
-      const chIdx = flatToc.findIndex((toc) => toc.id === tocChapter.id);
-
       switch (ev.key) {
         case "ArrowLeft":
           // Previous chapter
-          if (chIdx !== 0) {
-            const previousTocChapter = flatToc[chIdx - 1];
-            setCurrentChapterId(previousTocChapter.id);
-            setTocChapter(previousTocChapter);
-          }
+          navigatePreviousChapter();
           break;
         case "ArrowRight":
           // Next chapter
-          if (chIdx !== flatToc.length - 1) {
-            const nextTocChapter = flatToc[chIdx + 1];
-            setCurrentChapterId(nextTocChapter.id);
-            setTocChapter(nextTocChapter);
-          }
+          navigateNextChapter();
           break;
       }
     },
-    [flatToc, tocChapter]
+    [navigateNextChapter, navigatePreviousChapter]
   );
 
   useEffect(() => {
@@ -137,8 +150,34 @@ export function Reader() {
     setCurrentChapterId(tocChapter.id);
   }, []);
 
+  const swipeHandler = useCallback(() => {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const checkDirection = () => {
+      if (touchEndX < touchStartX) navigateNextChapter();
+      else if (touchEndX > touchStartX) navigatePreviousChapter();
+    };
+    const startHandler = (ev: TouchEvent) => {
+      touchStartX = ev.changedTouches[0].screenX;
+    };
+    const endHandler = (ev: TouchEvent) => {
+      touchEndX = ev.changedTouches[0].screenX;
+      checkDirection();
+    };
+
+    document.addEventListener("touchstart", startHandler);
+    document.addEventListener("touchend", endHandler);
+
+    return () => {
+      document.removeEventListener("touchstart", startHandler);
+      document.removeEventListener("touchend", endHandler);
+    };
+  }, [navigateNextChapter, navigatePreviousChapter]);
+
+  useEffect(swipeHandler, [swipeHandler]);
+
   return (
-    <div className="min-h-screen w-screen py-14">
+    <div className="min-h-screen w-screen py-14" ref={mainContainerRef}>
       <Header
         entry={readerData.entry}
         parser={readerData.parser}

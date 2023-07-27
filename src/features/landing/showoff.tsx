@@ -55,9 +55,9 @@ export function Showoff() {
   }, [loadStats]);
 
   return (
-    <section className="grid gap-4 grid-cols-3">
+    <section className="grid gap-4 md:grid-cols-3 grid-cols-1">
       <div className="col-span-2 flex flex-col items-center">
-        <Stats className="rounded-md border-2 border-neutral-700">
+        <Stats className="rounded-md border-2 border-neutral-700 grid-flow-row md:grid-flow-col">
           <Stats.Stat>
             <Stats.Stat.Item variant="figure">
               <MdLibraryBooks className="text-5xl text-primary" />
@@ -79,7 +79,7 @@ export function Showoff() {
           Get link for sharing library
         </Button>
         (wip!)
-        <section className="text-gray-500 text-sm mt-4 prose text-right mr-12">
+        <section className="text-gray-500 text-sm mt-4 prose md:text-right text-center mr-0 md:mr-12">
           Yes, even sharing to another device is done with peer to peer connections and never goes through our servers!
         </section>
       </div>

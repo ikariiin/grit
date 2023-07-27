@@ -37,12 +37,12 @@ export function Header({ entry, toc, onChapterChange, currentTocChapter }: Heade
           >
             <LiaListOlSolid />
           </IconDisplay>
-          <div className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-indigo-500 text-clip">
+          <div className="hidden md:block text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-indigo-500 text-clip">
             {typeof entry.metadata.root.package.metadata["dc:title"] === "string"
               ? entry.metadata.root.package.metadata["dc:title"]
               : entry.metadata.root.package.metadata["dc:title"]["#text"]}
           </div>
-          <div className="text-xl">&mdash;</div>
+          <div className="text-xl hidden md:block">&mdash;</div>
           <div className="text-xl">{currentTocChapter?.label}</div>
         </div>
         <div className="flex items-center gap-2">
