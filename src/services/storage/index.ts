@@ -29,6 +29,13 @@ export class Storage {
     return store.setItem(this.entry.id, this.entry);
   }
 
+  public static async count() {
+    const instance = Storage.getStoreInstance();
+    const store = Storage.getPromisifiedMethods(instance);
+
+    return (await store.keys()).length;
+  }
+
   public static async getAll() {
     const instance = Storage.getStoreInstance();
     const store = Storage.getPromisifiedMethods(instance);

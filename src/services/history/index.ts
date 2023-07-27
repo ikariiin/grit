@@ -30,6 +30,12 @@ export class HistoryStorage {
     return store.setItem(this.history.id, this.history);
   }
 
+  public static async count() {
+    const instance = HistoryStorage.getStoreInstance();
+    const store = HistoryStorage.getPromisifiedMethods(instance);
+    return (await store.keys()).length;
+  }
+
   public static async getAll() {
     const instance = HistoryStorage.getStoreInstance();
     const store = HistoryStorage.getPromisifiedMethods(instance);

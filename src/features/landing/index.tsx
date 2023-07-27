@@ -25,9 +25,6 @@ export function Landing() {
       <section className="mt-12">
         <Showoff />
       </section>
-      <section className="text-gray-500 text-sm mx-12 mt-12">
-        Yes, even sharing to another device is done with peer to peer connections and never goes through our servers!
-      </section>
     </FullPage>
   );
 }
