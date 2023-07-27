@@ -151,17 +151,31 @@ export function Reader() {
   }, []);
 
   const swipeHandler = useCallback(() => {
-    let touchStartX = 0;
-    let touchEndX = 0;
+    let touchStartX = 0,
+      touchEndX = 0,
+      touchStartY = 0,
+      touchEndY = 0;
     const checkDirection = () => {
-      if (touchEndX < touchStartX) navigateNextChapter();
-      else if (touchEndX > touchStartX) navigatePreviousChapter();
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 30) {
+        if (deltaX > 0) {
+          // Right swipe
+          navigatePreviousChapter();
+        } else {
+          // Left swipe
+          navigateNextChapter();
+        }
+      }
     };
     const startHandler = (ev: TouchEvent) => {
       touchStartX = ev.changedTouches[0].screenX;
+      touchStartY = ev.changedTouches[0].screenY;
     };
     const endHandler = (ev: TouchEvent) => {
       touchEndX = ev.changedTouches[0].screenX;
+      touchEndY = ev.changedTouches[0].screenY;
       checkDirection();
     };
 
