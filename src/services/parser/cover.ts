@@ -1,3 +1,5 @@
+import { generateDefaultCover } from "@/services/parser/default-cover";
+
 import { EPUBParser, FileOutputType } from ".";
 
 export class CoverParser {
@@ -14,13 +16,17 @@ export class CoverParser {
         }
       }
     } else {
-      if (rootInfo.package.metadata.meta.name === "cover") {
+      if (rootInfo.package.metadata?.meta?.name === "cover") {
         coverId = rootInfo.package.metadata.meta.content;
       }
     }
 
     if (!coverId) {
-      throw new Error("Cannot parse cover: no cover id found");
+      return generateDefaultCover(
+        typeof rootInfo.package.metadata["dc:title"] === "string"
+          ? rootInfo.package.metadata["dc:title"]
+          : rootInfo.package.metadata["dc:title"]["#text"]
+      );
     }
 
     const coverItem = rootInfo.package.manifest.item.find((item) => item.id === coverId);

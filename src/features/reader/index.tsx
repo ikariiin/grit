@@ -191,7 +191,7 @@ export function Reader() {
   useEffect(swipeHandler, [swipeHandler]);
 
   return (
-    <div className="min-h-screen w-screen py-14" ref={mainContainerRef}>
+    <div className="min-h-screen w-screen py-14 overscroll-none" ref={mainContainerRef}>
       <Header
         entry={readerData.entry}
         parser={readerData.parser}

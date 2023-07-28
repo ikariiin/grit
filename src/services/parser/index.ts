@@ -84,10 +84,11 @@ export class EPUBParser {
   }
 
   public async attemptFileRead<T extends FileOutputType>(path: string, type: T) {
+    const cleanPath = path.replace(window.location.origin + "/", "").replace("app/", "");
     try {
-      return await this.getFile(path.replace(window.location.origin + "/", ""), type, false);
+      return await this.getFile(cleanPath, type, false);
     } catch (e) {
-      return await this.getFile(path.replace(window.location.origin + "/", ""), type, true);
+      return await this.getFile(cleanPath, type, true);
     }
   }
 }
