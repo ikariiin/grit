@@ -54,7 +54,7 @@ export function PreferenceEditor({ open, onClose }: PreferenceEditorProps) {
       <Modal.Header>Edit preferences</Modal.Header>
       <Modal.Body>
         <div className="grid grid-cols-preference-item-layout gap-y-3 items-center">
-          <div>Theme (no worky)</div>
+          <div>Theme</div>
           <Select
             options={themeOptions.current}
             value={

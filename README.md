@@ -5,6 +5,11 @@ This is achevied by parsing and rendering the EPUB contents in-browser.
 
 This is also provided as a PWA, which in turn allows us to install this website as an app and offline accessibility.
 
+### Screenshots
+
+![Landing Page](screenshots/landing-screenshot.png)
+![App Page](screenshots/app-screenshot.png)
+
 ### How to get started?
 
 Simply clone the repo, install the dependencies and start hacking away.
