@@ -31,7 +31,12 @@ export class CoverParser {
 
     const coverItem = rootInfo.package.manifest.item.find((item) => item.id === coverId);
     if (!coverItem) {
-      throw new Error("Cannot parse cover: no cover item found");
+      // No cover item! Better send them another default cover then
+      return generateDefaultCover(
+        typeof rootInfo.package.metadata["dc:title"] === "string"
+          ? rootInfo.package.metadata["dc:title"]
+          : rootInfo.package.metadata["dc:title"]["#text"]
+      );
     }
 
     try {
