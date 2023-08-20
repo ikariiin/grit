@@ -138,17 +138,19 @@ export function Reader() {
     if (toc && tocChapter) setLoading(false);
   }, [toc, tocChapter]);
 
-  const render = useMemo(() => {
-    if (!tocChapter) return null;
-
-    if (loading) return <div>Loading...</div>;
-    return <Render parser={readerData.parser} src={tocChapter.src} />;
-  }, [tocChapter, readerData.parser, loading]);
-
   const onChapterChange = useCallback((tocChapter: ChapterListItem) => {
     setTocChapter(tocChapter);
     setCurrentChapterId(tocChapter.id);
   }, []);
+
+  const render = useMemo(() => {
+    if (!tocChapter) return null;
+
+    if (loading) return <div>Loading...</div>;
+    return (
+      <Render parser={readerData.parser} src={tocChapter.src} flatToc={flatToc} onChapterChange={onChapterChange} />
+    );
+  }, [tocChapter, readerData.parser, flatToc, onChapterChange, loading]);
 
   const swipeHandler = useCallback(() => {
     let touchStartX = 0,
@@ -189,7 +191,6 @@ export function Reader() {
   }, [navigateNextChapter, navigatePreviousChapter]);
 
   useEffect(swipeHandler, [swipeHandler]);
-
   return (
     <div className="min-h-screen  py-14 overscroll-none" ref={mainContainerRef}>
       <Header
