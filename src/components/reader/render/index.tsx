@@ -4,13 +4,16 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import config from "@/config";
 import { PreferenceContext } from "@/services/context";
 import { EPUBParser } from "@/services/parser";
+import { ChapterListItem } from "@/services/parser/interfaces";
 
 export interface RenderProps {
   parser: EPUBParser;
   src: string;
+  flatToc: ChapterListItem[];
+  onChapterChange: (toc: ChapterListItem) => void;
 }
 
-export function Render({ parser, src }: RenderProps) {
+export function Render({ parser, src, flatToc, onChapterChange }: RenderProps) {
   const [content, setContent] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [parsedHTML, setParsedHTML] = useState<string>("");
@@ -71,6 +74,35 @@ export function Render({ parser, src }: RenderProps) {
     [parser]
   );
 
+  const processLinks = useCallback(async (body: HTMLElement) => {
+    const aTag = body.querySelectorAll("a");
+    aTag.forEach((a) => {
+      const href = a.getAttribute("href");
+      a.removeAttribute("href");
+      if (href) {
+        a.setAttribute("data-toc-chapter-href", href);
+        a.setAttribute("role", "button");
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    const aTag = document.querySelectorAll("[data-toc-chapter-href]");
+
+    aTag.forEach((a) => {
+      a.addEventListener("click", () => {
+        const href = a.getAttribute("data-toc-chapter-href");
+        const hrefSplit = href?.split(" ")[0];
+        if (hrefSplit) {
+          const chapter = flatToc.find((ch) => ch.src.includes(href));
+          if (chapter) {
+            onChapterChange(chapter);
+          }
+        }
+      });
+    });
+  }, [parsedHTML, flatToc, onChapterChange]);
+
   const parseContent = useCallback(async () => {
     if (content.length === 0) return;
 
@@ -80,9 +112,10 @@ export function Render({ parser, src }: RenderProps) {
     const styleLinks = document.head.querySelectorAll("link[rel='stylesheet']") as NodeListOf<HTMLLinkElement>;
     await getStyles(styleLinks);
     await loadImages(document.body);
+    await processLinks(document.body);
 
     setParsedHTML(document.body.innerHTML);
-  }, [content, getStyles, loadImages]);
+  }, [content, getStyles, loadImages, processLinks]);
 
   useEffect(() => {
     parseContent();
